@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { useDB, update } from "@/lib/store";
+import { summarizeClaim } from "@/lib/claim-summary.functions";
 import type { Claim } from "@/lib/matching";
 import { PageHeader, Panel, Empty, Field, inputCls } from "@/components/sky";
 
@@ -10,6 +13,9 @@ export const Route = createFileRoute("/claims")({
 
 function Claims() {
   const db = useDB();
+  const summarize = useServerFn(summarizeClaim);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [err, setErr] = useState<Record<string, string>>({});
   const patch = (id: string, p: Partial<Claim>) => update((d) => ({ ...d, claims: d.claims.map((c) => c.id === id ? { ...c, ...p, updatedAt: new Date().toISOString() } : c) }));
   const decide = (c: Claim, ok: boolean) => update((d) => {
     const m = d.matches.find((x) => x.id === c.matchId)!;
@@ -49,6 +55,24 @@ function Claims() {
                     <Field label="Notes"><input disabled={!pending} className={inputCls} value={c.notes} onChange={(e) => patch(c.id, { notes: e.target.value })} /></Field>
                   </div>
                 </div>
+                {l && f && m && (
+                  <div className="mt-4 rounded-md border border-border bg-muted p-3">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">AI summary</span>
+                      <button className="btn btn-ghost disabled:opacity-50" disabled={busy === c.id} onClick={async () => {
+                        setBusy(c.id); setErr((e) => ({ ...e, [c.id]: "" }));
+                        try {
+                          const r = await summarize({ data: { claimId: c.id, passenger: `${p?.name ?? "Unknown"} (${p?.phone ?? ""})`, lost: `${l.colour} ${l.category} — ${l.description} at ${l.location}, ${l.time}`, found: `${f.colour} ${f.category} — ${f.description} at ${f.location}, ${f.time}`, score: m.score, idChecked: c.idChecked, detailsChecked: c.detailsChecked, notes: c.notes, staff: c.staff } });
+                          if (r.summary) patch(c.id, { aiSummary: r.summary, aiSummaryAt: new Date().toISOString() });
+                          else setErr((e) => ({ ...e, [c.id]: r.error ?? "Failed." }));
+                        } catch { setErr((e) => ({ ...e, [c.id]: "The AI summary could not be generated." })); }
+                        finally { setBusy(null); }
+                      }}>{busy === c.id ? "Summarising…" : c.aiSummary ? "Refresh" : "Generate summary"}</button>
+                    </div>
+                    {c.aiSummary ? <p className="whitespace-pre-line text-sm">{c.aiSummary}</p> : <p className="text-sm text-muted-foreground">No summary yet.</p>}
+                    {err[c.id] && <p className="mt-2 text-sm text-destructive">{err[c.id]}</p>}
+                    <p className="mt-2 text-[11px] text-muted-foreground">AI-generated — staff must still verify ownership in person.</p>
+                  </div>)}
                 {pending && m && (
                   <div className="mt-4 flex gap-2">
                     <button className="btn btn-primary disabled:opacity-40" disabled={!c.idChecked || !c.detailsChecked || !c.staff} onClick={() => decide(c, true)}>Approve &amp; return</button>

@@ -29,3 +29,4 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 - Data lives in a browser-local store (src/lib/store.ts) seeded with sample airport data; why: demo without a backend. Matching rules live in src/lib/matching.ts with tests.
+- AI calls go through @lovable.dev/ai-gateway inside createServerFn files (src/lib/*.functions.ts); why: keeps keys and prompts server-side.

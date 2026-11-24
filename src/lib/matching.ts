@@ -3,7 +3,7 @@ export interface Passenger { id: string; name: string; email: string; phone: str
 export interface LostItem { id: string; passengerId: string; category: string; colour: string; description: string; location: string; time: string; status: Status }
 export interface FoundItem { id: string; staff: string; category: string; colour: string; description: string; location: string; time: string; claimed: boolean }
 export interface MatchRecord { id: string; lostId: string; foundId: string; score: number; createdAt: string }
-export interface Claim { id: string; matchId: string; idChecked: boolean; detailsChecked: boolean; notes: string; decision: "Pending" | "Approved" | "Rejected"; staff: string; updatedAt: string }
+export interface Claim { id: string; matchId: string; idChecked: boolean; detailsChecked: boolean; notes: string; decision: "Pending" | "Approved" | "Rejected"; staff: string; updatedAt: string; aiSummary?: string; aiSummaryAt?: string }
 
 const STOP = new Set(["a","an","the","with","and","of","in","on","my","is","it","has","to","for"]);
 export const words = (s: string) =>
