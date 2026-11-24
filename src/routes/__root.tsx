@@ -121,7 +121,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 const NAV = [
   ["/", "00", "Dashboard"], ["/passengers", "01", "Passengers"], ["/lost", "02", "Lost reports"],
-  ["/found", "03", "Found items"], ["/matches", "04", "Matching"], ["/claims", "05", "Claims"],
+  ["/found", "03", "Found items"], ["/matches", "04", "Matching"], ["/claims", "05", "Claims"], ["/about", "06", "About"],
 ] as const;
 
 function RootComponent() {
