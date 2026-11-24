@@ -136,14 +136,16 @@ function RootComponent() {
             <Link to="/" className="font-display text-2xl uppercase tracking-wider">Sky<span className="text-sidebar-primary">Assist</span></Link>
             <p className="hidden font-mono text-xs text-sidebar-foreground/60 md:mt-1 md:block">LOST &amp; FOUND DESK</p>
           </div>
-          <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:px-3">
+          <nav className="flex gap-1 overflow-x-auto px-3 pb-1 md:flex-col md:px-3 md:pb-0">
             {NAV.map(([to, code, label]) => (
               <Link key={to} to={to} activeOptions={{ exact: to === "/" }}
-                className="flex shrink-0 items-center gap-3 rounded px-3 py-2 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent [&.active]:bg-sidebar-primary [&.active]:text-sidebar-primary-foreground">
+                className="flex shrink-0 items-center gap-3 rounded px-3 py-2.5 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent [&.active]:bg-sidebar-primary [&.active]:text-sidebar-primary-foreground">
                 <span className="font-mono text-xs opacity-70">{code}</span>{label}
               </Link>
             ))}
+            <span className="w-6 shrink-0 md:hidden" />
           </nav>
+          <p className="px-4 pb-2 font-mono text-[10px] uppercase tracking-wider text-sidebar-foreground/70 md:hidden">Swipe for more pages →</p>
         </aside>
         <main className="flex-1 px-4 py-8 md:px-10"><div className="mx-auto max-w-6xl"><Outlet /></div></main>
       </div>

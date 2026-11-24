@@ -11,12 +11,12 @@ export function ItemForm({ extra, submit, onSubmit }: { extra: ReactNode; submit
   return (
     <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); onSubmit(f); setF(empty()); }}>
       {extra}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="Item type"><select className={inputCls} value={f.category} onChange={set("category")}>{CATEGORIES.map((c) => <option key={c}>{c}</option>)}</select></Field>
         <Field label="Colour"><input required className={inputCls} value={f.colour} onChange={set("colour")} placeholder="Black" /></Field>
       </div>
       <Field label="Description"><textarea required rows={3} className={inputCls} value={f.description} onChange={set("description")} placeholder="Brand, marks, contents…" /></Field>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field label="Location"><select className={inputCls} value={f.location} onChange={set("location")}>{LOCATIONS.map((c) => <option key={c}>{c}</option>)}</select></Field>
         <Field label="Date & time"><input type="datetime-local" required className={inputCls} value={f.time} onChange={set("time")} /></Field>
       </div>

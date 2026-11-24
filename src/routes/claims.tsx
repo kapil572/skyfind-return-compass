@@ -43,21 +43,21 @@ function Claims() {
                 <div className="mb-3 flex items-center justify-between"><span className="font-mono text-xs">{c.id}</span>
                   <span className={`status-badge ${c.decision === "Approved" ? "status-returned" : c.decision === "Rejected" ? "status-lost" : "status-verify"}`}>{c.decision}</span></div>
                 {l && f ? (
-                  <div className="mb-3 grid grid-cols-2 gap-3 text-sm">
+                  <div className="mb-3 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
                     <div><div className="text-xs uppercase text-muted-foreground">Claimant</div><b>{p?.name}</b><div className="text-muted-foreground">{p?.phone}</div><div className="mt-1">{l.description}</div></div>
                     <div><div className="text-xs uppercase text-muted-foreground">Found item {f.id}</div><b>{f.colour} {f.category}</b><div className="mt-1">{f.description}</div></div>
                   </div>) : <p className="mb-3 text-sm text-muted-foreground">Match no longer exists.</p>}
                 <div className="space-y-2 text-sm">
                   <label className="flex items-center gap-2"><input type="checkbox" disabled={!pending} checked={c.idChecked} onChange={(e) => patch(c.id, { idChecked: e.target.checked })} /> Photo ID matches passenger</label>
                   <label className="flex items-center gap-2"><input type="checkbox" disabled={!pending} checked={c.detailsChecked} onChange={(e) => patch(c.id, { detailsChecked: e.target.checked })} /> Passenger described hidden details correctly</label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <Field label="Verified by"><input disabled={!pending} className={inputCls} value={c.staff} onChange={(e) => patch(c.id, { staff: e.target.value })} /></Field>
                     <Field label="Notes"><input disabled={!pending} className={inputCls} value={c.notes} onChange={(e) => patch(c.id, { notes: e.target.value })} /></Field>
                   </div>
                 </div>
                 {l && f && m && (
                   <div className="mt-4 rounded-md border border-border bg-muted p-3">
-                    <div className="mb-2 flex items-center justify-between gap-2">
+                    <div className="mb-2 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                       <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">AI summary</span>
                       <button className="btn btn-ghost disabled:opacity-50" disabled={busy === c.id} onClick={async () => {
                         setBusy(c.id); setErr((e) => ({ ...e, [c.id]: "" }));
@@ -74,7 +74,7 @@ function Claims() {
                     <p className="mt-2 text-[11px] text-muted-foreground">AI-generated — staff must still verify ownership in person.</p>
                   </div>)}
                 {pending && m && (
-                  <div className="mt-4 flex gap-2">
+                  <div className="mt-4 flex flex-wrap gap-2">
                     <button className="btn btn-primary disabled:opacity-40" disabled={!c.idChecked || !c.detailsChecked || !c.staff} onClick={() => decide(c, true)}>Approve &amp; return</button>
                     <button className="btn btn-danger" onClick={() => decide(c, false)}>Reject</button>
                   </div>)}

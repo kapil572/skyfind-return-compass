@@ -21,7 +21,7 @@ function Dashboard() {
       <PageHeader code="00 · DASHBOARD" title="Reports dashboard" sub="Live view of every lost report, match and claim at the lost-and-found desk." />
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         {stats.map(([l, v]) => (
-          <div key={l} className="panel"><div className="font-display text-5xl">{v}</div><div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{l}</div></div>
+          <div key={l} className="panel"><div className="font-display text-4xl sm:text-5xl">{v}</div><div className="mt-1.5 text-xs uppercase leading-snug tracking-wide text-muted-foreground">{l}</div></div>
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-3">
@@ -32,7 +32,7 @@ function Dashboard() {
                 const p = db.passengers.find((x) => x.id === l.passengerId);
                 return (
                   <li key={l.id} className="py-3">
-                    <div className="mb-2 flex items-center justify-between gap-2">
+                    <div className="mb-2 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                       <div className="min-w-0"><span className="font-mono text-xs text-muted-foreground">{l.id}</span> <span className="font-medium">{l.colour} {l.category}</span> <span className="text-sm text-muted-foreground">· {p?.name}</span></div>
                       <StatusBadge s={l.status} />
                     </div>
