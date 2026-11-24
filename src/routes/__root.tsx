@@ -81,11 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "SkyAssist — Airport Lost & Found" },
+      { name: "description", content: "Match lost and found items at the airport and verify ownership." },
+      { property: "og:title", content: "SkyAssist — Airport Lost & Found" },
+      { property: "og:description", content: "Match lost and found items at the airport and verify ownership." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -96,6 +95,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -118,13 +119,34 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+const NAV = [
+  ["/", "00", "Dashboard"], ["/passengers", "01", "Passengers"], ["/lost", "02", "Lost reports"],
+  ["/found", "03", "Found items"], ["/matches", "04", "Matching"], ["/claims", "05", "Claims"],
+] as const;
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="min-h-screen md:flex">
+        <aside className="bg-sidebar text-sidebar-foreground md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0">
+          <div className="flex items-center justify-between p-4 md:block md:p-6">
+            <Link to="/" className="font-display text-2xl uppercase tracking-wider">Sky<span className="text-sidebar-primary">Assist</span></Link>
+            <p className="hidden font-mono text-xs text-sidebar-foreground/60 md:mt-1 md:block">LOST &amp; FOUND DESK</p>
+          </div>
+          <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:px-3">
+            {NAV.map(([to, code, label]) => (
+              <Link key={to} to={to} activeOptions={{ exact: to === "/" }}
+                className="flex shrink-0 items-center gap-3 rounded px-3 py-2 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent [&.active]:bg-sidebar-primary [&.active]:text-sidebar-primary-foreground">
+                <span className="font-mono text-xs opacity-70">{code}</span>{label}
+              </Link>
+            ))}
+          </nav>
+        </aside>
+        <main className="flex-1 px-4 py-8 md:px-10"><div className="mx-auto max-w-6xl"><Outlet /></div></main>
+      </div>
     </QueryClientProvider>
   );
 }

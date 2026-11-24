@@ -10,33 +10,90 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ClaimsRouteImport } from './routes/claims'
+import { Route as FoundRouteImport } from './routes/found'
+import { Route as LostRouteImport } from './routes/lost'
+import { Route as MatchesRouteImport } from './routes/matches'
+import { Route as PassengersRouteImport } from './routes/passengers'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClaimsRoute = ClaimsRouteImport.update({
+  id: '/claims',
+  path: '/claims',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundRoute = FoundRouteImport.update({
+  id: '/found',
+  path: '/found',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LostRoute = LostRouteImport.update({
+  id: '/lost',
+  path: '/lost',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatchesRoute = MatchesRouteImport.update({
+  id: '/matches',
+  path: '/matches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassengersRoute = PassengersRouteImport.update({
+  id: '/passengers',
+  path: '/passengers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/claims': typeof ClaimsRoute
+  '/found': typeof FoundRoute
+  '/lost': typeof LostRoute
+  '/matches': typeof MatchesRoute
+  '/passengers': typeof PassengersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/claims': typeof ClaimsRoute
+  '/found': typeof FoundRoute
+  '/lost': typeof LostRoute
+  '/matches': typeof MatchesRoute
+  '/passengers': typeof PassengersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/claims': typeof ClaimsRoute
+  '/found': typeof FoundRoute
+  '/lost': typeof LostRoute
+  '/matches': typeof MatchesRoute
+  '/passengers': typeof PassengersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/claims' | '/found' | '/lost' | '/matches' | '/passengers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/claims' | '/found' | '/lost' | '/matches' | '/passengers'
+  id:
+    | '__root__'
+    | '/'
+    | '/claims'
+    | '/found'
+    | '/lost'
+    | '/matches'
+    | '/passengers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClaimsRoute: typeof ClaimsRoute
+  FoundRoute: typeof FoundRoute
+  LostRoute: typeof LostRoute
+  MatchesRoute: typeof MatchesRoute
+  PassengersRoute: typeof PassengersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +105,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/claims': {
+      id: '/claims'
+      path: '/claims'
+      fullPath: '/claims'
+      preLoaderRoute: typeof ClaimsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/found': {
+      id: '/found'
+      path: '/found'
+      fullPath: '/found'
+      preLoaderRoute: typeof FoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lost': {
+      id: '/lost'
+      path: '/lost'
+      fullPath: '/lost'
+      preLoaderRoute: typeof LostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/matches': {
+      id: '/matches'
+      path: '/matches'
+      fullPath: '/matches'
+      preLoaderRoute: typeof MatchesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passengers': {
+      id: '/passengers'
+      path: '/passengers'
+      fullPath: '/passengers'
+      preLoaderRoute: typeof PassengersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClaimsRoute: ClaimsRoute,
+  FoundRoute: FoundRoute,
+  LostRoute: LostRoute,
+  MatchesRoute: MatchesRoute,
+  PassengersRoute: PassengersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
